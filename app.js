@@ -54,28 +54,65 @@ function verifytoken(req , res , next){
 
 }
 
-function justify( firstText ){
+function spacing( firstText ){
 
+    var allinedtext = justify(firstText);
+    var spaces= [];
+    var i,j;
+    var lines = allinedtext.split('\r');
+    var words = allinedtext.split(' ');
+    var words1 = firstText.split(' ');
+    return words1[30];
+}
+
+function justify ( firstText ){
     var array = firstText.split('');
+    var letters = /^[A-Za-z]+$/;
     var finaltext;
     var i = 0 ;
     var j = 0;
+    var spaces=[]
     while( i < array.length ){
+        if(array[i]==' '){
+            spaces.push(i);
+        }
         if(array[i] == "\r" && array[i+1] == "\n" && array[i+2] == "\r" && array[i+3] == "\n"){
             finaltext+='\r';
             j=0;
             i+=4;
         }else if (array[i] == "\r" && array[i+1] == "\n"){
-            if(j==80){
+            var p = i;
+            var k=0;
+            var tester = true;
+            while(tester){
+            if(j==80&&array[p+1]!=letters){
                 j=0;
                 finaltext+='\r ';
+                tester =false;
+            }else{
+               finaltext[spaces[k]] = '  ';
+               p++;
+               k++;
+            }
             }
             j++;
             i+=2;
         }else{
             if(j==80){
-                j=0;
-                finaltext+='\r ';
+                var p = i ;
+                var k=0;
+                var tester = true;
+                while(tester){
+                if(j==80&&array[p+1]!=letters){
+                    j=0;
+                    finaltext+='\r ';
+                    tester =false;
+                }else{
+                   finaltext[spaces[k]] = '  ';
+                   k++;
+                   p++;
+                }
+                }
             }
             finaltext+=array[i];
             j++;
